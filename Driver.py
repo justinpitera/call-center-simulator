@@ -1,8 +1,10 @@
 import csv
 from multiprocessing.connection import answer_challenge
+import CustomerClass
 
 
-def timeTaken(time):
+## take in time string formatted as 00:00:00 and convert it to total seconds
+def toSeconds(time):
     time = str(time)
     numbers = time.split(":")
     hours = int(numbers[0])
@@ -26,9 +28,10 @@ with open('data.csv', 'r') as csvfile:
         incoming_calls.append(int(row[1]))
         answer_calls.append(int(row[2]))
         abandonded_calls.append(int(row[4]))
-        answer_speed.append(timeTaken(row[5]))
-
+        answer_speed.append(toSeconds(row[5]))
+avg = sum(incoming_calls) / len(incoming_calls)
 #print(incoming_calls)
+print(avg)
 #print(answer_calls)
 #print(abandonded_calls)
-print(answer_speed)
+#print(answer_speed)

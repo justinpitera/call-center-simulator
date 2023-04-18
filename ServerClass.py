@@ -5,10 +5,11 @@ class Server:
     endTime = 0.0
     cust = None
     id = 0
+    ## Constructor 
     def __init__(self, id) -> None:
         self.id = id
         pass
-
+    ## Add the customer to the 
     def newCust(self, customer):
         self.cust = customer
         self.time = customer.getServiceStartTime()

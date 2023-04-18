@@ -128,9 +128,12 @@ for i in range(serverCount):
     serverList.append(Server(i))
 
 ## servers store the customer as a field
-for i in range(len(serverList)):
-    serverList[i].newCust(customerList.pop(0))
-    serverList[i].serving = True
+for server in serverList:
+    if(len(customerList) != 0):
+        server.newCust(customerList.pop(0))
+        server.serving = True
+        print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
+
 tick(serverList, customerList, 3600)
 
 

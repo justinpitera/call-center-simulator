@@ -2,6 +2,7 @@ import csv
 from multiprocessing.connection import answer_challenge
 import CustomerClass
 import random
+from ServerClass import Server
 
 
 ## take in time string formatted as 00:00:00 and convert it to total seconds
@@ -12,6 +13,11 @@ def toSeconds(time):
     minutes = int(numbers[1])
     seconds = int(numbers[2])
     return hours*3600 + minutes*60 + seconds
+
+def toPercent(percent):
+    numberString = percent.split("%")
+    number = float(numberString[0]) / 100
+    return number
 
 def randomD(min, max):
     return random.uniform(min, max)
@@ -53,8 +59,11 @@ rand = random.randint(0, max(answer_speed))
 
 randomDay = random.randint(min(index), max(index))
 randomServiceTime = random.randint(min(talk_duration), max(talk_duration))
-customerCount = int(input("how many customers for this simulation: "))
 
+customerCount = int(input("how many customers for this simulation: "))
+serverCount = int(input("how many servers for this simulation: "))
+
+#intialize total num of customer
 customerEntered = 0.0
 customerList = []
 for i in range(customerCount):
@@ -65,7 +74,6 @@ for i in range(customerCount):
         cus = CustomerClass.Customer(i, randomD(0.2, 1.3) + customerEntered, randomD(0, randomServiceTime))
     customerEntered = cus.getEntryTime()
     customerList.append(cus)
-
 customerList[0].setServiceStartTime(customerList[0].getEntryTime())
 customerList[0].setServiceEndTime(customerList[0].getServiceStartTime() + customerList[0].getServiceTime())
 print(customerList[0].toString())
@@ -78,6 +86,14 @@ for i in range(1, len(customerList)):
     cus.setServiceEndTime(cus.getServiceStartTime() + cus.getServiceTime())
     print(cus.toString())
 
+## List of servers
+serverList = []
+for i in range(serverCount):
+    serverList[i] = Server()
 
+## dictionary of server and customer pairs
+serverCustDuo = dict()
+for i in range(serverCount):
+    serverCustDuo[serverList[i]] = customerList.pop(0)
 
-
+serverKeys = serverCustDuo.keys()

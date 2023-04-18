@@ -1,8 +1,8 @@
 import csv
 from multiprocessing.connection import answer_challenge
-import CustomerClass
 import random
 from ServerClass import Server
+from CustomerClass import Customer
 
 
 ## take in time string formatted as 00:00:00 and convert it to total seconds
@@ -21,6 +21,42 @@ def toPercent(percent):
 
 def randomD(min, max):
     return random.uniform(min, max)
+
+
+def tick(serverList, customerList, ticks):
+    # make sure there are customers 
+    if len(customerList) == 0:
+        print("No customers in the queue")
+        quit()
+    # make sure there are servers 
+    if len(serverList) == 0:
+        print("There are no servers")
+        quit()
+    
+    # do as many ticks are requested
+    for i in range(ticks):
+        # for each server 
+        for server in serverList:
+            # if they are severing a customer 
+            if(server.serving):
+                # check if they should have finished with the customer 
+                if(server.time >= server.endTime):
+                    # They should no longer be serving that customer 
+                    server.serving = False
+                    print("Server", str(server.id), "finished with Customer", str(server.cust.id))
+                else:
+                    # increment the time the server is with the customer 
+                    server.tick()
+            # if they are no serving a customer 
+            else:
+                # if there still customers to help
+                if(len(customerList) != 0):
+                    # start serving the next customer 
+                    server.serving = True
+                    server.newCust(customerList.pop(0))
+                    print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
+
+            
 
 index = []
 incoming_calls = []
@@ -69,9 +105,9 @@ customerList = []
 for i in range(customerCount):
     num = random.randint(0, 4)
     if num == 4:
-        cus = CustomerClass.Customer(i, randomD(0.2, 1.3) + customerEntered, randomD(0, randomServiceTime + 2))
+        cus = Customer(i, randomD(0.2, 1.3) + customerEntered, randomD(0, randomServiceTime + 2))
     else:
-        cus = CustomerClass.Customer(i, randomD(0.2, 1.3) + customerEntered, randomD(0, randomServiceTime))
+        cus = Customer(i, randomD(0.2, 1.3) + customerEntered, randomD(0, randomServiceTime))
     customerEntered = cus.getEntryTime()
     customerList.append(cus)
 customerList[0].setServiceStartTime(customerList[0].getEntryTime())
@@ -89,11 +125,24 @@ for i in range(1, len(customerList)):
 ## List of servers
 serverList = []
 for i in range(serverCount):
-    serverList[i] = Server()
+    serverList.append(Server(i))
+
+## servers store the customer as a field
+for i in range(len(serverList)):
+    serverList[i].newCust(customerList.pop(0))
+    serverList[i].serving = True
+tick(serverList, customerList, 3600)
+
+
+
+    
 
 ## dictionary of server and customer pairs
-serverCustDuo = dict()
-for i in range(serverCount):
-    serverCustDuo[serverList[i]] = customerList.pop(0)
+#serverCustDuo = dict()
+#for i in range(serverCount):
+ #   serverCustDuo[serverList[i]] = customerList.pop(0)
 
-serverKeys = serverCustDuo.keys()
+#serverKeys = serverCustDuo.keys()
+
+        
+    

@@ -38,5 +38,8 @@ class Customer:
     def setServiceEndTime(self, endTime):
         self.serviceEndTime = round(endTime,2)
 
+    def __str__(self) -> str:
+        return "Customer [id=" + str(self.id) + ", entryTime=" + str(self.entryTime) + ", startTime= " + str(self.serviceStartTime) + ", serviceTime=" + str(self.serviceTime) + ", DepartureTime=" + str(self.serviceEndTime) + "]"
+    
     def toString(self):
         return "Customer [id=" + str(self.id) + ", entryTime=" + str(self.entryTime) + ", startTime= " + str(self.serviceStartTime) + ", serviceTime=" + str(self.serviceTime) + ", DepartureTime=" + str(self.serviceEndTime) + "]"

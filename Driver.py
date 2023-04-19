@@ -23,7 +23,7 @@ def randomD(min, max):
     return random.uniform(min, max)
 
 
-def tick(serverList, customerList, ticks):
+def tick(serverList, customerList, ticks, max_queue_length, max_waiting_time):
     # make sure there are customers 
     if len(customerList) == 0:
         print("No customers in the queue")
@@ -32,6 +32,45 @@ def tick(serverList, customerList, ticks):
     if len(serverList) == 0:
         print("There are no servers")
         quit()
+    
+    # do as many ticks are requested
+    for i in range(ticks):
+        # remove baulking customers
+        while len(customerList) > max_queue_length:
+            baulked_cust = customerList.pop()
+            print("Customer", str(baulked_cust.id), "baulked from the queue")
+        
+        # remove reneging customers
+        for j in range(len(customerList)):
+            cust = customerList[j]
+            if cust.getWaitingTime() >= max_waiting_time:
+                customerList.pop(j)
+                print("Customer", str(cust.id), "reneged from the queue")
+        
+        # for each server 
+        for server in serverList:
+            # if they are severing a customer 
+            if(server.serving):
+                # check if they should have finished with the customer 
+                if(server.time >= server.endTime):
+                    # They should no longer be serving that customer 
+                    server.serving = False
+                    print("Server", str(server.id), "finished with Customer", str(server.cust.id))
+                else:
+                    # increment the time the server is with the customer 
+                    server.tick()
+            # if they are no serving a customer 
+            else:
+                # if there still customers to help
+                if(len(customerList) != 0):
+                    # start serving the next customer 
+                    server.serving = True
+                    server.newCust(customerList.pop(0))
+                    print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
+
+
+
+
     
     # do as many ticks are requested
     for i in range(ticks):
@@ -134,7 +173,9 @@ for server in serverList:
         server.serving = True
         print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
 
-tick(serverList, customerList, 3600)
+        #In this updated call, max_queue_length is set to 5 and max_waiting_time is set to 600 seconds (or 10 minutes), based on the requirements you mentioned earlier. These values can be adjusted as needed.
+tick(serverList, customerList, 3600, 5, 600)
+
 
 
 

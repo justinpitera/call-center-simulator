@@ -70,7 +70,7 @@ def tick(serverList, customerList, ticks, max_queue_length, max_waiting_time):
                 else:
                     # increment the time the server is with the customer 
                     server.tick()
-            # if they are no serving a customer 
+            # if they are not serving a customer 
             else:
                 # if there still customers to help
                 if(len(queue) != 0):
@@ -82,6 +82,7 @@ def tick(serverList, customerList, ticks, max_queue_length, max_waiting_time):
                     server.serving = True
                     server.newCust(nextCus)
                     print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
+
 
 def callsPerDay(hours):
     return int(np.ceil((np.random.poisson(avgCalls) / 8 ) * hours))
@@ -190,11 +191,11 @@ for i in range(serverCount):
     serverList.append(Server(i))
 
 ## servers store the customer as a field
-for server in serverList:
-    if(len(customerList) != 0):
-        server.newCust(customerList.pop(0))
-        server.serving = True
-        print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
+#for server in serverList:
+#    if(len(customerList) != 0):
+#        server.newCust(customerList.pop(0))
+#        server.serving = True
+#        print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
 
         #In this updated call, max_queue_length is set to 5 and max_waiting_time is set to 600 seconds (or 10 minutes), based on the requirements you mentioned earlier. These values can be adjusted as needed.
 tick(serverList, customerList, 3600, 5, 600)

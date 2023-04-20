@@ -20,7 +20,7 @@ class Customer:
         self.id = id
         self.entryTime = round(entryTime,2)
         self.waitingTime = self.entryTime
-        
+        self.maxWaitingTime = np.random.poisson(avgWait)
         pass
     
     def getId(self):

@@ -24,7 +24,7 @@ def customersTick(customerList):
         customer.tick()
 
 
-def tick(serverList, customerList, ticks):
+def tick(serverList, customerList, ticks, avgWait):
     # make sure there are customers 
     if len(customerList) == 0:
         print("No customers in the queue")
@@ -41,7 +41,7 @@ def tick(serverList, customerList, ticks):
             if customer.willRenege():
                 print("Customer", str(customer.id), "did not want to wait", str(customer.maxWaitingTime), "seconds")
                 customerList.remove(customer)
-         
+        
         # for each server 
         for server in serverList:
             # if they are severing a customer 
@@ -64,5 +64,3 @@ def tick(serverList, customerList, ticks):
                     server.newCust(customer)
                     print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
         customersTick(customerList)
-
-            

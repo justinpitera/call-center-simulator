@@ -66,8 +66,8 @@ class Customer:
     
     def toString(self):
                 return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", startTime= " + str(datetime.timedelta(seconds = self.serviceStartTime)) + ", serviceTime=" + str(datetime.timedelta(seconds = self.serviceTime)) + ", DepartureTime=" + str(datetime.timedelta(seconds = self.serviceEndTime)) +  "]"
-
-    def toString(self, baulkReneg):
+  
+    def baulkRenegString(self, baulkReneg):
         if baulkReneg == 0:
             return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", baulkTime=" + str(datetime.timedelta(seconds = self.baulkTime)) +  "]"
         if baulkReneg == 1:

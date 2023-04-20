@@ -5,7 +5,7 @@ import numpy as np
 import datetime
 from ServerClass import Server
 from CustomerClass import Customer
-
+import matplotlib.pyplot as plt
 
 ## take in time string formatted as 00:00:00 and convert it to total seconds
 def toSeconds(time):
@@ -24,6 +24,13 @@ def toPercent(percent):
 def randomD(min, max):
     return random.uniform(min, max)
 
+answered_calls = []
+reneged_calls = []
+baulked_calls = []
+
+# create global arrays to store baulked and reneged customers
+baulked_calls = []
+reneged_calls = []
 
 def tick(serverList, customerList, ticks, max_queue_length, max_waiting_time):
     # make sure there are customers 
@@ -46,8 +53,9 @@ def tick(serverList, customerList, ticks, max_queue_length, max_waiting_time):
         while len(queue) > max_queue_length:
             baulked_cust = queue.pop()
             baulked_cust.setBaulkTime(i)
+            baulked_calls.append(baulked_cust)  # add baulked customer to the baulked_calls array
             print("Customer", str(baulked_cust.id), "baulked from the queue")
-            print(baulked_cust.toString(0))
+            print(baulked_cust.baulkRenegString(0))
             print(len(queue))
         # remove reneging customers
         for j in range(len(queue) - 1):
@@ -55,8 +63,9 @@ def tick(serverList, customerList, ticks, max_queue_length, max_waiting_time):
             if i - cust.getEntryTime() >= max_waiting_time:
                 reneged_cust = queue.pop(j)
                 reneged_cust.setRenegTime(i)
+                reneged_calls.append(reneged_cust)  # add reneged customer to the reneged_calls array
                 print("Customer", str(cust.id), "reneged from the queue")
-                print(reneged_cust.toString(1))
+                print(reneged_cust.baulkRenegString(1))
         
         # for each server 
         for server in serverList:
@@ -66,6 +75,7 @@ def tick(serverList, customerList, ticks, max_queue_length, max_waiting_time):
                 if(server.time >= server.endTime):
                     # They should no longer be serving that customer 
                     server.serving = False
+                    answered_calls.append(server.cust)  # add completed customer to the answered_calls array
                     print("Server", str(server.id), "finished with Customer", str(server.cust.id), ": ", str(server.cust))
                 else:
                     # increment the time the server is with the customer 
@@ -82,6 +92,7 @@ def tick(serverList, customerList, ticks, max_queue_length, max_waiting_time):
                     server.serving = True
                     server.newCust(nextCus)
                     print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
+
 
 
 def callsPerDay(hours):
@@ -161,45 +172,41 @@ customerList = []
 for i in range(len(callTimes)):
     cus = Customer(i, callTimes[i], callLengths[i])
     customerList.append(cus)
-#for i in range(customerCount):
-#    num = random.randint(0, 4)
-#    if num == 4:
-#        cus = Customer(i, randomD(0.2, 1.3) + customerEntered, randomD(0, randomServiceTime + 2))
-#    else:
-#        cus = Customer(i, randomD(0.2, 1.3) + customerEntered, randomD(0, randomServiceTime))
-#    customerEntered = cus.getEntryTime()
-#    customerList.append(cus)
+
 customerList[0].setServiceStartTime(customerList[0].getEntryTime())
 customerList[0].setServiceEndTime(customerList[0].getServiceStartTime() + customerList[0].getServiceTime())
-print(customerList[0].toString(3))
+print(customerList[0].toString())
 
-#for i in range(1, len(customerList)):
-#    cus = customerList[i]
-#    prevCus = customerList[i-1]
 
-#    if cus.getEntryTime() <= prevCus.getServiceEndTime():
-#        cus.setServiceStartTime(prevCus.getServiceEndTime())
-#        cus.setServiceEndTime(cus.getServiceStartTime() + cus.getServiceTime())
-#    else:
-#        cus.setServiceStartTime(cus.getEntryTime())
-#        cus.setServiceEndTime(cus.getEntryTime() + cus.getServiceTime())
-#    print(cus.toString())
 
 ## List of servers
 serverList = []
 for i in range(serverCount):
     serverList.append(Server(i))
-
-## servers store the customer as a field
-#for server in serverList:
-#    if(len(customerList) != 0):
-#        server.newCust(customerList.pop(0))
-#        server.serving = True
-#        print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
+    
 
         #In this updated call, max_queue_length is set to 5 and max_waiting_time is set to 600 seconds (or 10 minutes), based on the requirements you mentioned earlier. These values can be adjusted as needed.
-tick(serverList, customerList, 3600, 5, 600)
+tick(serverList, customerList, simulationHours * 3600, 5, 600)
 
+
+
+
+
+# loop through the answered_calls array and print the details of each customer
+print("Details of answered calls:")
+for customer in answered_calls:
+    print(customer.toString())
+
+
+print("Details of baulked calls:")
+for customer in baulked_calls:
+    print(customer.baulkRenegString(0))
+
+print("Details of reneged calls:")
+for customer in reneged_calls:
+    print(customer.baulkRenegString(1))
+
+# Incoming calls
 
 
 

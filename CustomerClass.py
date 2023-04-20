@@ -1,4 +1,5 @@
 import random
+import numpy as np
 ###
  # Customer Class with ID, entryTime, and ServiceTime
  # 
@@ -19,7 +20,7 @@ class Customer:
         self.id = id
         self.entryTime = round(entryTime,2)
         self.waitingTime = self.entryTime
-        self.maxWaitingTime = random.uniform(self.waitingTime, avgWait)
+        
         pass
     
     def getId(self):

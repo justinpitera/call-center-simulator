@@ -12,8 +12,8 @@ class Server:
     ## Add the customer to the 
     def newCust(self, customer):
         self.cust = customer
-        self.time = customer.getServiceStartTime()
-        self.endTime = customer.getServiceEndTime()
+        self.time = 0.0
+        self.endTime = customer.getServiceTime()
     
     def tick(self):
         self.time += 1

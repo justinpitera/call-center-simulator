@@ -37,6 +37,7 @@ def tick(serverList, customerList, ticks, avgWait):
     # do as many ticks are requested
     for i in range(ticks):
         
+        ## Reneging
         for customer in customerList:
             if customer.willRenege():
                 print("Customer", str(customer.id), "did not want to wait", str(customer.maxWaitingTime), "seconds")

@@ -19,6 +19,7 @@ class Customer:
         self.serviceTime = round(serviceTime,2)
         self.id = id
         self.entryTime = round(entryTime,2)
+        # Renege variables 
         self.waitingTime = self.entryTime
         self.maxWaitingTime = np.random.poisson(avgWait)
         pass
@@ -44,9 +45,11 @@ class Customer:
     def setServiceEndTime(self, endTime):
         self.serviceEndTime = round(endTime,2)
 
+    # for renege 
     def tick(self):
         self.waitingTime += 1
 
+    # renege check
     def willRenege(self):
         if(self.waitingTime >= self.maxWaitingTime):
             return True

@@ -83,5 +83,5 @@ for server in serverList:
         server.serving = True
         print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
 
-tick(serverList, customerList, 3600)
+tick(serverList, customerList, 3600, avgWaitTime)
 

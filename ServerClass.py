@@ -1,13 +1,13 @@
 from CustomerClass import Customer
 class Server:
-    serving = False
-    time = 0.0
-    endTime = 0.0
-    cust = None
-    id = 0
+   
     ## Constructor 
     def __init__(self, id) -> None:
         self.id = id
+        self.cust = None
+        self.endTime = 0.0
+        self.time = 0.0
+        self.serving = False
         pass
     ## Add the customer to the 
     def newCust(self, customer):

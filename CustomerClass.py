@@ -6,15 +6,7 @@ import numpy as np
  # @author Matthew Tobino, Andy Pham, Justin Pitera, Sean Pandolfo
  ##
 class Customer:
-    id = None
-    entryTime = None
-    serviceTime = None
-    serviceStartTime = None
-    serviceEndTime = None
-    waitingTime = None
-    maxWaitingTime = None
-    beingServed = False
-
+    
     def __init__(self, id, entryTime, serviceTime, avgWait) -> None:
         self.serviceTime = round(serviceTime,2)
         self.id = id
@@ -22,6 +14,8 @@ class Customer:
         # Renege variables 
         self.waitingTime = self.entryTime
         self.maxWaitingTime = np.random.poisson(avgWait)
+        self.serviceStartTime = None
+        self.serviceEndTime = None
         pass
     
     def getId(self):

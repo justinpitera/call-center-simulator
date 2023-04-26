@@ -40,7 +40,7 @@ def tick(serverList, customerList, ticks, avgWait):
         ## Reneging
         for customer in customerList:
             if customer.willRenege():
-                print("Customer", str(customer.id), "did not want to wait", str(customer.maxWaitingTime), "seconds")
+                print("Customer", str(customer.id), "did not want to wait", str(customer.maxWaitingTime), "seconds in line")
                 customerList.remove(customer)
         
         # for each server 

@@ -1,5 +1,6 @@
 import random
 import numpy as np
+import datetime
 ###
  # Customer Class with ID, entryTime, and ServiceTime
  # 
@@ -12,7 +13,7 @@ class Customer:
         self.id = id
         self.entryTime = round(entryTime,2)
         # Renege variables 
-        self.waitingTime = self.entryTime
+        self.waitingTime = 0
         self.maxWaitingTime = np.random.poisson(avgWait)
         self.serviceStartTime = None
         self.serviceEndTime = None
@@ -50,7 +51,7 @@ class Customer:
         return False
 
     def __str__(self) -> str:
-        return "Customer [id=" + str(self.id) + ", entryTime=" + str(self.entryTime) + ", startTime= " + str(self.serviceStartTime) + ", serviceTime=" + str(self.serviceTime) + ", DepartureTime=" + str(self.serviceEndTime) + "]"
+         return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", startTime= " + str(datetime.timedelta(seconds = self.serviceStartTime)) + ", serviceTime=" + str(datetime.timedelta(seconds = self.serviceTime)) + ", DepartureTime=" + str(datetime.timedelta(seconds = self.serviceEndTime)) +  "]"
     
     def toString(self):
-        return "Customer [id=" + str(self.id) + ", entryTime=" + str(self.entryTime) + ", startTime= " + str(self.serviceStartTime) + ", serviceTime=" + str(self.serviceTime) + ", DepartureTime=" + str(self.serviceEndTime) + "]"
+         return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", startTime= " + str(datetime.timedelta(seconds = self.serviceStartTime)) + ", serviceTime=" + str(datetime.timedelta(seconds = self.serviceTime)) + ", DepartureTime=" + str(datetime.timedelta(seconds = self.serviceEndTime)) +  "]"

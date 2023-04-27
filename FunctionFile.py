@@ -56,7 +56,6 @@ def tick(serverList, customerList, ticks, max_queue_length, max_waiting_time):
             baulked_cust = queue.pop()
             baulked_cust.setBaulkTime()
             print(baulked_cust.printBaulk(), "baulked from the queue")
-            print()
 
         # remove reneging customers
         for customer in queue:
@@ -154,5 +153,4 @@ rand = random.randint(0, max(answer_speed))
 #print(rand)
 
 def getAvgWait():
-    print(avgWait)
     return avgWait

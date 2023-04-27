@@ -35,12 +35,6 @@ with open('data.csv', 'r') as csvfile:
         service_level.append(str(row[8]))
 
 avgWaitTime = sum(waiting_time) / len(waiting_time)
-numofA = len(abandonded_calls)
-answerSpeedSecondList = list()
-rand = random.randint(0, max(answer_speed))
-#print(rand)
-
-randomDay = random.randint(min(index), max(index))
 randomServiceTime = random.randint(min(talk_duration), max(talk_duration))
 
 customerCount = int(input("how many customers for this simulation: "))
@@ -52,9 +46,9 @@ customerList = []
 for i in range(customerCount):
     num = random.randint(0, 4)
     if num == 4:
-        cus = Customer(i, randomD(0.2, 1.3) + customerEntered, randomD(0, randomServiceTime + 2), avgWaitTime)
+        cus = Customer(i, randomD(0.2, 1.3) + customerEntered, random.randint(0, randomServiceTime + 2), avgWaitTime)
     else:
-        cus = Customer(i, randomD(0.2, 1.3) + customerEntered, randomD(0, randomServiceTime), avgWaitTime)
+        cus = Customer(i, randomD(0.2, 1.3) + customerEntered, random.randint(0, randomServiceTime), avgWaitTime)
     customerEntered = cus.getEntryTime()
     customerList.append(cus)
 customerList[0].setServiceStartTime(customerList[0].getEntryTime())

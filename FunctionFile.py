@@ -25,6 +25,9 @@ def customersTick(customerList):
 
 
 def tick(serverList, customerList, ticks, avgWait):
+    customersServed = []
+    serviceTimes = []
+    
     # make sure there are customers 
     if len(customerList) == 0:
         print("No customers in the queue")
@@ -51,6 +54,7 @@ def tick(serverList, customerList, ticks, avgWait):
                 if(server.time >= server.endTime):
                     # They should no longer be serving that customer 
                     server.serving = False
+                    customersServed.append(server.cust)
                     print("Server", str(server.id), "finished with Customer", str(server.cust.id))
                 else:
                     # increment the time the server is with the customer 
@@ -65,3 +69,13 @@ def tick(serverList, customerList, ticks, avgWait):
                     server.newCust(customer)
                     print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
         customersTick(customerList)
+    
+    for customer in customersServed:
+        serviceTimes.append(customer.serviceTime)
+    
+    plotInformation = dict()
+    for time in serviceTimes:
+        plotInformation[time] = plotInformation.get(time, 0) + 1
+    
+    for key,value in plotInformation.items():
+        print("Time:", key, "occured:", value)

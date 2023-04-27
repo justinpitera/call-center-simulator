@@ -10,7 +10,7 @@ servedCustomers = []
 abandondedCustomers = []
 baulkedCustomers = []
 reneggedCustomers = []
-
+serviceTimes = []
 
 
 ## take in time string formatted as 00:00:00 and convert it to total seconds
@@ -35,6 +35,7 @@ def customersTick(customerList):
         customer.tick()
 
 def tick(serverList, customerList, ticks, max_queue_length, max_waiting_time):
+
     # make sure there are customers 
     queue = []
     if len(customerList) == 0:
@@ -92,6 +93,15 @@ def tick(serverList, customerList, ticks, max_queue_length, max_waiting_time):
                     server.newCust(nextCus)
                     print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
         customersTick(queue)
+    for customer in servedCustomers:
+        serviceTimes.append(customer.serviceTime)
+        
+
+    plotInformation = dict()
+    for time in serviceTimes:
+        plotInformation[time] = plotInformation.get(time, 0) + 1
+
+    return plotInformation
 
 def callsPerDay(hours):
     return int(np.ceil((np.random.poisson(avgCalls) / 8 ) * hours))

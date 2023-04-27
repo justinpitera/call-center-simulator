@@ -6,6 +6,7 @@ import datetime
 from FunctionFile import *
 from ServerClass import Server
 from CustomerClass import Customer
+import matplotlib.pyplot as plt
 
 randomDay = random.randint(min(index), max(index))
 randomServiceTime = random.randint(min(talk_duration), max(talk_duration))
@@ -35,7 +36,28 @@ serverList = []
 for i in range(serverCount):
     serverList.append(Server(i))
 
-tick(serverList, customerList, simulationHours*3600, 5, 600)
+#tick(serverList, customerList, simulationHours*3600, 5, 600)
+
+
+# Define a dictionary
+data = tick(serverList, customerList, simulationHours*3600, 5, 600)
+
+# Extract keys and values from the dictionary
+x = list(data.keys())
+y = list(data.values())
+
+# Plot the data using Matplotlib
+plt.bar(x, y)
+
+# Add labels to the plot
+plt.xlabel('Service Time (in seconds)')
+plt.ylabel('Frequency')
+plt.title('')
+
+# Display the plot
+plt.show()
+
+
 
 
 

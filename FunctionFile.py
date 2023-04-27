@@ -54,14 +54,15 @@ def tick(serverList, customerList, ticks, max_queue_length, max_waiting_time):
         # remove baulking customers
         while len(queue) > max_queue_length:
             baulked_cust = queue.pop()
-            baulked_cust.setBaulkTime(i)
+            baulked_cust.setBaulkTime()
             print("Customer", str(baulked_cust.id), "baulked from the queue")
             print(baulked_cust.toString(0))
 
         # remove reneging customers
         for customer in queue:
             if customer.willRenege():
-                print("Customer", str(customer.id), "did not want to wait")
+                customer.setRenegTime()
+                print(str(customer.printRenegged()), "did not want to wait")
                 reneggedCustomers.append(customer)
                 queue.remove(customer)
 

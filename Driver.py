@@ -7,16 +7,6 @@ from FunctionFile import *
 from ServerClass import Server
 from CustomerClass import Customer
 
-
-
-
-
-
-
-
-
-
-
 randomDay = random.randint(min(index), max(index))
 randomServiceTime = random.randint(min(talk_duration), max(talk_duration))
 

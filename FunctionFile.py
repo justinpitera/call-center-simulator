@@ -40,6 +40,7 @@ def tick(serverList, customerList, ticks, avgWait):
     # do as many ticks are requested
     for i in range(ticks):
         
+
         ## Reneging
         for customer in customerList:
             if customer.willRenege():
@@ -79,3 +80,5 @@ def tick(serverList, customerList, ticks, avgWait):
     
     for key,value in plotInformation.items():
         print("Time:", key, "occured:", value)
+
+    return plotInformation

@@ -39,6 +39,7 @@ randomServiceTime = random.randint(min(talk_duration), max(talk_duration))
 
 customerCount = int(input("how many customers for this simulation: "))
 serverCount = int(input("how many servers for this simulation: "))
+timeToRun = int(input("how many hours do you want to sim: ")) *3600
 
 #intialize total num of customer
 customerEntered = 0.0
@@ -77,5 +78,5 @@ for server in serverList:
         server.serving = True
         print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
 
-tick(serverList, customerList, 3600, avgWaitTime)
+tick(serverList, customerList, timeToRun, avgWaitTime)
 

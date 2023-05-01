@@ -1,7 +1,13 @@
-import datetime
+import random
 import numpy as np
-
+import datetime
+###
+ # Customer Class with ID, entryTime, and ServiceTime
+ # 
+ # @author Matthew Tobino, Andy Pham, Justin Pitera, Sean Pandolfo
+ ##
 class Customer:
+    
     id = None
     entryTime = None
     serviceTime = None
@@ -10,12 +16,15 @@ class Customer:
     baulkTime = None
     renegTime = None
 
-    def __init__(self, id, entryTime, serviceTime) -> None:
+    def __init__(self, id, entryTime, serviceTime, avgWait) -> None:
         self.serviceTime = round(serviceTime,2)
         self.id = id
         self.entryTime = round(entryTime,2)
-        self.serviceStartTime = 9999999
-        self.serviceEndTime = 99999999
+        # Renege variables 
+        self.waitingTime = 0
+        self.maxWaitingTime = np.random.poisson(avgWait)
+        self.serviceStartTime = 0
+        self.serviceEndTime = 0
         self.baulkTime = 0
         self.renegTime = 0
         pass
@@ -40,37 +49,34 @@ class Customer:
     
     def setServiceEndTime(self, endTime):
         self.serviceEndTime = round(endTime,2)
+
+    def setBaulkTime(self):
+        self.baulkTime = self.entryTime + self.waitingTime
     
-    def getBaulkTime(self):
-        return self.baulkTime
+    def setRenegTime(self):
+        self.renegTime = self.entryTime + self.waitingTime
 
-    def setBaulkTime(self, baulkTime):
-        self.baulkTime = round(baulkTime,2)
+    def removeMaxWaitingTime(self):
+        self.maxWaitingTime = 99999999999999999
 
-    def getRenegTime(self):
-        return self.renegTime
+    # for renege 
+    def tick(self):
+        self.waitingTime += 1
 
-    def setRenegTime(self, renegTime):
-        self.renegTime = round(renegTime,2)
+    # renege check
+    def willRenege(self):
+        if(self.waitingTime >= self.maxWaitingTime):
+            return True
+        return False
 
-    def getWaitingTime(self):
-        return round(self.serviceStartTime - self.entryTime, 2)
-
-    #def __str__(self) -> str:
-    #    return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", startTime= " + str(datetime.timedelta(seconds = self.serviceStartTime)) + ", serviceTime=" + str(datetime.timedelta(seconds = self.serviceTime)) + ", DepartureTime=" + str(datetime.timedelta(seconds = self.serviceEndTime)) + ", baulkTime=" + str(datetime.timedelta(seconds = self.baulkTime)) + ", renegTime=" + str(datetime.timedelta(seconds = self.renegTime)) + "]"
-    
-    #def toString(self):
-    #            return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", startTime= " + str(datetime.timedelta(seconds = self.serviceStartTime)) + ", serviceTime=" + str(datetime.timedelta(seconds = self.serviceTime)) + ", DepartureTime=" + str(datetime.timedelta(seconds = self.serviceEndTime)) + ", baulkTime=" + str(datetime.timedelta(seconds = self.baulkTime)) + ", renegTime=" + str(datetime.timedelta(seconds = self.renegTime)) + "]"
     def __str__(self) -> str:
-        return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", startTime= " + str(datetime.timedelta(seconds = self.serviceStartTime)) + ", serviceTime=" + str(datetime.timedelta(seconds = self.serviceTime)) + ", DepartureTime=" + str(datetime.timedelta(seconds = self.serviceEndTime)) +  "]"
+         return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", startTime= " + str(datetime.timedelta(seconds = self.serviceStartTime)) + ", serviceTime=" + str(datetime.timedelta(seconds = self.serviceTime)) + ", DepartureTime=" + str(datetime.timedelta(seconds = self.serviceEndTime)) + "]"
     
-    def toString(self=3):
-                return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", startTime= " + str(datetime.timedelta(seconds = self.serviceStartTime)) + ", serviceTime=" + str(datetime.timedelta(seconds = self.serviceTime)) + ", DepartureTime=" + str(datetime.timedelta(seconds = self.serviceEndTime)) +  "]"
+    def printRenegged(self):
+        return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", renegTime=" + str(datetime.timedelta(seconds = self.renegTime)) + "]"
 
-    def toString(self, baulkReneg):
-        if baulkReneg == 0:
-            return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", baulkTime=" + str(datetime.timedelta(seconds = self.baulkTime)) +  "]"
-        if baulkReneg == 1:
-            return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", renegTime=" + str(datetime.timedelta(seconds = self.renegTime)) +  "]"
-        else:
-            return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", startTime= " + str(datetime.timedelta(seconds = self.serviceStartTime)) + ", serviceTime=" + str(datetime.timedelta(seconds = self.serviceTime)) + ", DepartureTime=" + str(datetime.timedelta(seconds = self.serviceEndTime)) +  "]"
+    def printBaulk(self):
+        return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", baulkTime=" + str(datetime.timedelta(seconds = self.baulkTime)) +  "]"
+
+    def toString(self):
+         return "Customer [id=" + str(self.id) + ", entryTime=" + str(datetime.timedelta(seconds = self.entryTime)) + ", startTime= " + str(datetime.timedelta(seconds = self.serviceStartTime)) + ", serviceTime=" + str(datetime.timedelta(seconds = self.serviceTime)) + ", DepartureTime=" + str(datetime.timedelta(seconds = self.serviceEndTime)) +  "]"

@@ -170,4 +170,3 @@ rand = random.randint(0, max(answer_speed))
 
 def getAvgWait():
     return avgWait
-

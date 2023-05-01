@@ -1,3 +1,4 @@
+
 import csv
 from multiprocessing.connection import answer_challenge
 import datetime
@@ -169,3 +170,4 @@ rand = random.randint(0, max(answer_speed))
 
 def getAvgWait():
     return avgWait
+

@@ -28,6 +28,9 @@ for i in range(len(callTimes)):
     customerList.append(cus)
 
 
+tick(serverList, customerList, timeToRun, avgWaitTime)
+
+
 ## List of servers
 serverList = []
 for i in range(serverCount):
@@ -39,4 +42,4 @@ print("Total Customers Served: ", len(getServedCustomers()))
 print("Total Customers Baulked: ", len(getBaulkedCustomers()))
 print("Total Customers Renegged: ", len(getReneggedCustomers()))
 print("Customers still in queue and/or currently being served: ", (len(callTimes) - (len(getServedCustomers()) + len(getBaulkedCustomers()) + len(getReneggedCustomers()))))
-    
+

@@ -12,6 +12,7 @@ abandondedCustomers = []
 baulkedCustomers = []
 reneggedCustomers = []
 queue = []
+serviceTimes = []
 
 
 ## take in time string formatted as 00:00:00 and convert it to total seconds
@@ -81,6 +82,8 @@ def tick(serverList, queue, max_queue_length, currentTick):
         baulked_cust.setBaulkTime()
         baulkedCustomers.append(baulked_cust)
         print(baulked_cust.printBaulk(), "baulked from the queue")
+    for customer in servedCustomers:
+        serviceTimes.append(customer.serviceTime)
 
 def simulate(serverList, customerList, ticks, max_queue_length):
     # make sure there are customers 
@@ -99,6 +102,20 @@ def simulate(serverList, customerList, ticks, max_queue_length):
             if customerList[0].getEntryTime() <= i:
                 queue.append(customerList.pop(0))
         tick(serverList, queue, max_queue_length, i)
+        
+
+    serviceTimeCounts = dict()
+    for customer in servedCustomers:
+        serviceTime = customer.serviceTime
+        serviceTimeCounts[serviceTime] = serviceTimeCounts.get(serviceTime, 0) + 1
+
+    for key, value in serviceTimeCounts.items():
+        print("Service time:", key, "customers:", value)
+
+    return serviceTimeCounts
+
+
+
 
 
 def callsPerDay(hours):

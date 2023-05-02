@@ -1,10 +1,19 @@
 from tkinter import *
 
+
 def submit():
     totalHours = entryTotalHours.get()
     totalWorkers = entryTotalWorkers.get()
     print(totalHours + " hours")
     print(totalWorkers + " workers")
+
+    # Opens a new window for other data
+    newWindow = Toplevel(window)
+    newWindow.title("New Window")
+    newWindow.geometry("600x600")
+    Label(newWindow, text ="This is a new window").pack()
+
+
     
 
 window = Tk()
@@ -15,15 +24,7 @@ WINDOW_LENGTH = 600
 WINDOW_WIDTH = 300
 window.geometry(str(WINDOW_LENGTH) + "x" + str(WINDOW_WIDTH))
 # ----------------------
-
-# Label for text boxes
-#lbl1 = Label(window, text = "Enter number of hours: ")
-#lbl1.pack(pady = 20, side = LEFT)
-
-#lbl2 = Label(window, text = "Enter number of workers: ")
-#lbl2.pack(pady = 40)
-# -----------------------
-
+    
 # Text Boxes for input
 entryTotalHours = Entry()
 entryTotalHours.config(font=('Arial',15))

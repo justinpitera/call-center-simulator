@@ -10,9 +10,11 @@ from CustomerClass import Customer
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+
 def main(totalHours, totalServers) -> dict:
     #randomDay = random.randint(min(index), max(index))
     #randomServiceTime = random.randint(min(talk_duration), max(talk_duration))
+
 
     simulationHours = int(totalHours)
     simulationTime = simulationHours * 3600
@@ -30,6 +32,8 @@ def main(totalHours, totalServers) -> dict:
     for i in range(len(callTimes)):
         cus = Customer(i, callTimes[i], callLengths[i], getAvgWait())
         customerList.append(cus)
+
+#serverKeys = serverCustDuo.keys()
 
 
     #tick(serverList, customerList, timeToRun, avgWaitTime)
@@ -155,4 +159,3 @@ cusInQueueLabel.grid(row=7, column=0, pady= 2, sticky=W)
 
 
 window.mainloop()
-

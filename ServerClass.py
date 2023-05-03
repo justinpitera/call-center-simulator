@@ -1,4 +1,9 @@
 from CustomerClass import Customer
+###
+ # Server Class with ID, and customer they are helping
+ # 
+ # @author Matthew Tobino, Andy Pham, Justin Pitera, Sean Pandolfo
+ ##
 class Server:
 
     ## Constructor 

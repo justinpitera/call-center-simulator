@@ -38,9 +38,9 @@ def tick(serverList, queue, max_queue_length, currentTick):
         if customer.willRenege():
             customer.setRenegTime()
             reneggedCustomersToRemove.append(customer)
+            reneggedCustomers.append(customer)
     for customer in reneggedCustomersToRemove:
         queue.remove(customer)
-        reneggedCustomers.append(customer)
 
     # for each server 
     for server in serverList:
@@ -79,6 +79,7 @@ def tick(serverList, queue, max_queue_length, currentTick):
 
 ## simulation driver 
 def simulate(serverList, customerList, ticks, max_queue_length):
+    resetSimulation()
     # make sure there are customers 
     queue = []
     if len(customerList) == 0:
@@ -88,7 +89,7 @@ def simulate(serverList, customerList, ticks, max_queue_length):
     if len(serverList) == 0:
         print("There are no servers")
         quit()
-    
+
     # do as many ticks are requested
     for i in range(ticks):
         if len(customerList) > 0:
@@ -138,6 +139,11 @@ def getReneggedCustomers():
 
 def getServedCustomers():
     return servedCustomers
+
+def resetSimulation():
+    servedCustomers.clear()
+    reneggedCustomers.clear()
+    baulkedCustomers.clear()
 
 index = []
 incoming_calls = []

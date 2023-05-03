@@ -44,6 +44,7 @@ def main(totalHours, totalServers) -> dict:
 from tkinter import *
 
 def submit():
+
     currentData = dict
     totalHours = entryTotalHours.get()
     totalWorkers = entryTotalWorkers.get()
@@ -74,7 +75,7 @@ def submit():
     canvas = FigureCanvasTkAgg(fig, master=graphWindow)
     canvas.draw()
     canvas.get_tk_widget().pack()
-
+    
     # display the window
     #graphWindow.mainloop()
 

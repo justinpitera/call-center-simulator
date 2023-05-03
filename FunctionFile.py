@@ -24,18 +24,12 @@ def toSeconds(time):
     seconds = int(numbers[2])
     return hours*3600 + minutes*60 + seconds
 
-def toPercent(percent):
-    numberString = percent.split("%")
-    number = float(numberString[0]) / 100
-    return number
-
-def randomD(min, max):
-    return random.uniform(min, max)
-
+## call tick on all of the customers in the queue
 def customersTick(customerList):
     for customer in customerList:
         customer.tick()
 
+## overarching tick function for the simulation
 def tick(serverList, queue, max_queue_length, currentTick):
     
     reneggedCustomersToRemove = []
@@ -46,7 +40,6 @@ def tick(serverList, queue, max_queue_length, currentTick):
             reneggedCustomersToRemove.append(customer)
     for customer in reneggedCustomersToRemove:
         queue.remove(customer)
-        print(str(customer.printRenegged()), "did not want to wait")
         reneggedCustomers.append(customer)
 
     # for each server 
@@ -57,13 +50,12 @@ def tick(serverList, queue, max_queue_length, currentTick):
                 if(server.time >= server.endTime):
                     # They should no longer be serving that customer 
                     server.serving = False
-                    print("Server", str(server.id), "finished with Customer", str(server.cust.id), ": ", str(server.cust))
                     servedCustomers.append(server.cust)
                     server.tick()
                 else:
                     # increment the time the server is with the customer 
                     server.tick()
-            # if they are not serving a customer 
+        # if they are not serving a customer 
         else:
                 # if there still customers to help
                 if(len(queue) != 0):
@@ -74,17 +66,18 @@ def tick(serverList, queue, max_queue_length, currentTick):
                     currentCus.removeMaxWaitingTime()
                     server.serving = True
                     server.newCust(currentCus)
-                    print("Server", str(server.id), "is now serving Customer", str(server.cust.id))
+    # tick the customers                
     customersTick(queue)
     # remove baulking customers
     if len(queue) > max_queue_length:
         baulked_cust = queue.pop()
         baulked_cust.setBaulkTime()
         baulkedCustomers.append(baulked_cust)
-        print(baulked_cust.printBaulk(), "baulked from the queue")
+
     for customer in servedCustomers:
         serviceTimes.append(customer.serviceTime)
 
+## simulation driver 
 def simulate(serverList, customerList, ticks, max_queue_length):
     # make sure there are customers 
     queue = []
@@ -109,15 +102,13 @@ def simulate(serverList, customerList, ticks, max_queue_length):
         serviceTime = customer.serviceTime
         serviceTimeCounts[serviceTime] = serviceTimeCounts.get(serviceTime, 0) + 1
 
-    for key, value in serviceTimeCounts.items():
-        print("Service time:", key, "customers:", value)
+
+    for key in serviceTimeCounts.keys():
+        serviceTimeCounts[key] = round(serviceTimeCounts.get(key) / len(servedCustomers), 3)
 
     return serviceTimeCounts
 
-
-
-
-
+##
 def callsPerDay(hours):
     return int(np.ceil((np.random.poisson(avgCalls) / 8 ) * hours))
 

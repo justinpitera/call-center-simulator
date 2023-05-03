@@ -12,37 +12,26 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 def main(totalHours, totalServers) -> dict:
-    #randomDay = random.randint(min(index), max(index))
-    #randomServiceTime = random.randint(min(talk_duration), max(talk_duration))
-
 
     simulationHours = int(totalHours)
     simulationTime = simulationHours * 3600
-    customerCount = callsPerDay(simulationHours)
-    #customerCount = int(input("how many customers for this simulation: "))
+    
     serverCount = int(totalServers)
     callTimes = getCustomerCallTimes(simulationHours)
     callLengths = getCallLengths(callTimes)
 
-
-    #intialize total num of customer
-    #customerEntered = 0.0
     customerList = []
 
     for i in range(len(callTimes)):
         cus = Customer(i, callTimes[i], callLengths[i], getAvgWait())
         customerList.append(cus)
 
-#serverKeys = serverCustDuo.keys()
-
-
-    #tick(serverList, customerList, timeToRun, avgWaitTime)
-
-
     ## List of servers
     serverList = []
     for i in range(serverCount):
         serverList.append(Server(i))
+
+    simulationData = simulate(serverList, customerList, simulationTime, 5)
 
     callsLabel.config(text="Total Calls: " + str(len(callTimes)) )
     servedLabel.config(text="Total Customers Served: " + str(len(getServedCustomers())))
@@ -50,13 +39,7 @@ def main(totalHours, totalServers) -> dict:
     renegeLabel.config(text="Total Customers Renegged: " + str(len(getReneggedCustomers())))
     cusInQueueLabel.config(text="Customers still in queue and/or currently being served: " + str((len(callTimes) - (len(getServedCustomers()) + len(getBaulkedCustomers()) + len(getReneggedCustomers())))))
     
-    
-    print("Total Calls: ", len(callTimes))
-    print("Total Customers Served: ", len(getServedCustomers()))
-    print("Total Customers Baulked: ", len(getBaulkedCustomers()))
-    print("Total Customers Renegged: ", len(getReneggedCustomers()))
-    print("Customers still in queue and/or currently being served: ", (len(callTimes) - (len(getServedCustomers()) + len(getBaulkedCustomers()) + len(getReneggedCustomers()))))
-    return simulate(serverList, customerList, simulationTime, 5)
+    return simulationData
 
 from tkinter import *
 
@@ -69,7 +52,7 @@ def submit():
 
     # create a new window
     graphWindow = Toplevel(window)
-    graphWindow.title("Customer Count Plot")
+    graphWindow.title("Customer Service Time Plot")
 
     # create a figure object
     fig = plt.figure(figsize=(6, 4), dpi=100)
@@ -83,9 +66,9 @@ def submit():
     ax.bar(x, y)
 
     # Add labels to the plot
-    ax.set_xlabel('Time (in seconds)')
-    ax.set_ylabel('Number of Customers')
-    ax.set_title('Frequency of Customer Count')
+    ax.set_xlabel('Service Time (in seconds)')
+    ax.set_ylabel('Probability of Service Time')
+    ax.set_title('Distribution of Service Times')
 
     # create a canvas to display the plot
     canvas = FigureCanvasTkAgg(fig, master=graphWindow)
@@ -93,7 +76,7 @@ def submit():
     canvas.get_tk_widget().pack()
 
     # display the window
-    graphWindow.mainloop()
+    #graphWindow.mainloop()
 
 
 window = Tk()
@@ -138,19 +121,19 @@ run.grid(row=2, column=1, sticky= W)
 # ------------------------
 
 # Output Labels
-callsLabel = Label(window, text="", font=('Arial',12))
+callsLabel = Label(window, text="")
 callsLabel.grid(row=3, column=0, pady= 2, sticky=W)
 
-servedLabel = Label(window, text="", font=('Arial',12))
+servedLabel = Label(window, text="")
 servedLabel.grid(row=4, column=0, pady= 2, sticky=W)
 
-baulkedLabel = Label(window, text="", font=('Arial',12))
+baulkedLabel = Label(window, text="")
 baulkedLabel.grid(row=5, column=0, pady= 2, sticky=W)
 
-renegeLabel = Label(window, text="", font=('Arial',12))
+renegeLabel = Label(window, text="")
 renegeLabel.grid(row=6, column=0, pady= 2, sticky=W)
 
-cusInQueueLabel = Label(window, text="", font=('Arial',12))
+cusInQueueLabel = Label(window, text="")
 cusInQueueLabel.grid(row=7, column=0, pady= 2, sticky=W)
 # ------------------------
 

@@ -104,7 +104,7 @@ def simulate(serverList, customerList, ticks, max_queue_length):
 
 
     for key in serviceTimeCounts.keys():
-        serviceTimeCounts[key] = round(serviceTimeCounts.get(key) / len(servedCustomers), 3)
+        serviceTimeCounts[key] = round(serviceTimeCounts.get(key) / len(serviceTimeCounts), 3)
 
     return serviceTimeCounts
 

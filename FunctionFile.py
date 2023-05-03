@@ -11,6 +11,7 @@ servedCustomers = []
 abandondedCustomers = []
 baulkedCustomers = []
 reneggedCustomers = []
+completedCustomers = []
 queue = []
 serviceTimes = []
 
@@ -37,8 +38,10 @@ def tick(serverList, queue, max_queue_length, currentTick):
     for customer in queue:
         if customer.willRenege():
             customer.setRenegTime()
+            customer.setServiceTime(0)
             reneggedCustomersToRemove.append(customer)
             reneggedCustomers.append(customer)
+            completedCustomers.append(customer)
     for customer in reneggedCustomersToRemove:
         queue.remove(customer)
 
@@ -51,6 +54,7 @@ def tick(serverList, queue, max_queue_length, currentTick):
                     # They should no longer be serving that customer 
                     server.serving = False
                     servedCustomers.append(server.cust)
+                    completedCustomers.append(server.cust)
                     server.tick()
                 else:
                     # increment the time the server is with the customer 
@@ -72,7 +76,9 @@ def tick(serverList, queue, max_queue_length, currentTick):
     if len(queue) > max_queue_length:
         baulked_cust = queue.pop()
         baulked_cust.setBaulkTime()
+        baulked_cust.setServiceTime(0)
         baulkedCustomers.append(baulked_cust)
+        completedCustomers.append(baulked_cust)
 
     for customer in servedCustomers:
         serviceTimes.append(customer.serviceTime)
@@ -105,8 +111,7 @@ def simulate(serverList, customerList, ticks, max_queue_length):
 
 
     for key in serviceTimeCounts.keys():
-        serviceTimeCounts[key] = round(serviceTimeCounts.get(key) / len(serviceTimeCounts), 3)
-
+        serviceTimeCounts[key] = round(serviceTimeCounts.get(key) / len(servedCustomers), 3)
     return serviceTimeCounts
 
 ##
@@ -140,10 +145,14 @@ def getReneggedCustomers():
 def getServedCustomers():
     return servedCustomers
 
+def getCompletedCustomers():
+    return completedCustomers
+
 def resetSimulation():
     servedCustomers.clear()
     reneggedCustomers.clear()
     baulkedCustomers.clear()
+    completedCustomers.clear()
 
 index = []
 incoming_calls = []

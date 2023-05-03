@@ -57,6 +57,12 @@ class Customer:
     def removeMaxWaitingTime(self):
         self.maxWaitingTime = 99999999999999999
 
+    def getWaitingTime(self):
+        return self.waitingTime
+
+    def setServiceTime(self, time):
+        self.serviceTime = time
+
     # for renege 
     def tick(self):
         self.waitingTime += 1
@@ -64,6 +70,8 @@ class Customer:
     # renege check
     def willRenege(self):
         if(self.waitingTime >= self.maxWaitingTime):
+            self.renegTime = self.waitingTime
+            self.serviceEndTime = self.waitingTime
             return True
         return False
 

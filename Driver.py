@@ -39,9 +39,11 @@ def main(totalHours, totalServers) -> dict:
     renegeLabel.config(text="Total Customers Renegged: " + str(len(getReneggedCustomers())))
     cusInQueueLabel.config(text="Customers still in queue and/or currently being served: " + str((len(callTimes) - (len(getServedCustomers()) + len(getBaulkedCustomers()) + len(getReneggedCustomers())))))
     
+    
     return simulationData
 
 from tkinter import *
+from tkinter import ttk
 
 def submit():
 
@@ -76,6 +78,38 @@ def submit():
     canvas.draw()
     canvas.get_tk_widget().pack()
     
+    tableWindow = Toplevel(window)
+    tableWindow.title("Table of Customers")
+    table = ttk.Treeview(tableWindow)
+    table.grid(row = 0, column= 0, sticky=W, pady=2)
+    table['columns'] = ("Customer #", "Status?", "Entry Time", "Waiting Time", "Service Time", "Exit Time")
+    table.column("#0", width = 0, minwidth=0)
+    table.column("Customer #", width = 120, anchor=W)
+    table.column("Status?", width = 120, anchor=W)
+    table.column("Entry Time", width = 120, anchor=W)
+    table.column("Waiting Time", width = 120, anchor=W)
+    table.column("Service Time", width = 120, anchor=W)
+    table.column("Exit Time", width = 120, anchor=W)
+
+    table.heading("#0", text = "", anchor=W)
+    table.heading("Customer #", text = "Customer #", anchor=W)
+    table.heading("Status?", text = "Status?", anchor=W)
+    table.heading("Entry Time", text = "Entry Time", anchor=W)
+    table.heading("Waiting Time", text = "Waiting Time", anchor=W)
+    table.heading("Service Time", text = "Service Time", anchor=W)
+    table.heading("Exit Time", text = "Exit Time", anchor=W)
+
+    i = 0
+    totalCustomers = getCompletedCustomers()
+    for customer in totalCustomers:
+        customerStatus = "Served"
+        if customer.renegTime != 0:
+            customerStatus = "Reneged"
+        elif customer.baulkTime != 0:
+            customerStatus = "Balked"
+        i = i + 1
+        table.insert(parent='', index='end', iid = i, text = '', values = ("Customer " + str(i), customerStatus, datetime.timedelta(seconds = customer.getEntryTime()), datetime.timedelta(seconds =customer.getWaitingTime()), datetime.timedelta(seconds =customer.getServiceTime()), datetime.timedelta(seconds = (customer.getServiceEndTime()))))
+
     # display the window
     #graphWindow.mainloop()
 
@@ -136,7 +170,11 @@ renegeLabel.grid(row=6, column=0, pady= 2, sticky=W)
 
 cusInQueueLabel = Label(window, text="")
 cusInQueueLabel.grid(row=7, column=0, pady= 2, sticky=W)
+
+
+
 # ------------------------
+
 
 
 

@@ -1,7 +1,7 @@
 # **Call Center Simulation Project**
 
 # Contributors
-[Matthew Tobino](https://github.com/mtobino, https://www.linkedin.com/in/matthew-tobino-704a631b8/) <br> 
+[Matthew Tobino](https://github.com/mtobino) <br> 
 [Sean Pandolfo](https://github.com/BunColo) <br>
 [Justin Pitera](https://github.com/justinpitera) <br> 
 [Andy Pham](https://github.com/Phamandy2000) <br>
